@@ -28,30 +28,27 @@ public class TokenizerMapper
     @Override
     public void map(LongWritable key, Text value, Context context) throws
             IOException, InterruptedException {
+         Text word = new Text();
+    DoubleWritable one = new DoubleWritable(1);
 
         String[] line = value.toString().split(",", 12);
-
-        // Ignore invalid lines
-      /*  if (line.length != 12) {
-            System.out.println("- " + line.length);
-            return;
-        }*/
-
-
-
-
         try{
             // The output `key` is the name of the region
             String outputKey = line[3];
             // The output `value` is the magnitude of the earthquake
             double outputValue = Double.parseDouble(line[9]);
-    //        System.out.println("ddddd"+outputValue);
-            context.write(new Text(outputKey), new DoubleWritable(outputValue));
+            ////////////////
+            StringTokenizer itr = new StringTokenizer(outputKey);
+            while (itr.hasMoreTokens()) {
+                word.set(itr.nextToken());
+                context.write(word, one);
+            }
+            ////////////
+         //   context.write(new Text(outputKey), new DoubleWritable(outputValue));
 
         } catch(NumberFormatException ex){ // handle your exception
             System.out.println("aaaaa"+ex);
 
         }
-        // Record the output in the Context object
     }
 }
