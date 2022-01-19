@@ -1,5 +1,9 @@
 package tn.insat.tp1;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
@@ -14,6 +18,9 @@ public class WordCount {
         System.setProperty("hadoop.home.dir", "C:\\winutils");
 
         Configuration conf = new Configuration();
+
+        ////////////////
+
         ///////////////
         Job job2 = Job.getInstance(conf, "word count2");
         job2.setJarByClass(WordCount.class);

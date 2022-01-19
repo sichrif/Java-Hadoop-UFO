@@ -1,5 +1,9 @@
 package tn.insat.tp1;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -39,6 +43,22 @@ public class BookReducer   extends
         }
         System.out.println("--> Sum = "+sum);
         result.set(sum);
+        try{
+            System.out.println("firstttttttt");
+            MongoClient mongoClient = new MongoClient("localhost", 27017);
+            DB database = mongoClient.getDB("hadoop");
+            DBCollection collection = database.getCollection("books");
+            BasicDBObject document = new BasicDBObject();
+            document.put("year", key.toString());
+            document.put("nbooks", result.toString());
+            collection.insert(document);
+
+            // database.getCollectionNames().forEach(System.out::println);
+
+        }catch (Exception e){
+            System.out.println("goterr"+e);
+        }
+
         context.write(key, result);
 
     }

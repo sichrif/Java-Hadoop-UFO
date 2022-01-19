@@ -1,5 +1,9 @@
 package tn.insat.tp1;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -40,6 +44,24 @@ public class IntSumReducer
         }
         System.out.println("--> Sum = "+sum);
         result.set(sum);
+
+        try{
+            System.out.println("firstttttttt");
+            MongoClient mongoClient = new MongoClient("localhost", 27017);
+            DB database = mongoClient.getDB("hadoop");
+            DBCollection collection = database.getCollection("calls");
+            BasicDBObject document = new BasicDBObject();
+            document.put("country", key.toString());
+            document.put("ncalls", result.toString());
+            collection.insert(document);
+
+            // database.getCollectionNames().forEach(System.out::println);
+
+        }catch (Exception e){
+            System.out.println("goterr"+e);
+        }
+
+
         context.write(key, result);
 
     }

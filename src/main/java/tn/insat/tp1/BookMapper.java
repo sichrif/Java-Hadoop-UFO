@@ -41,7 +41,9 @@ public class BookMapper  extends
                 StringTokenizer itr = new StringTokenizer(outputKey);
                 while (itr.hasMoreTokens()) {
                     word.set(itr.nextToken());
-                    context.write(word, one);
+                     if(word.getLength()==4){
+                        context.write(word, one);
+                    }
                 }
                 ////////////
                 //   context.write(new Text(outputKey), new DoubleWritable(outputValue));
